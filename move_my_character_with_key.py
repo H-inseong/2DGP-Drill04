@@ -51,22 +51,25 @@ while running:
     clear_canvas()
     tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
 
-    if dirx == 0 and diry == 0:
+    if dirx == 0 and diry == 0: #idle
        character.clip_draw(frame * frame_width, frame_y * 3 + 64, frame_width, frame_height, x, y)
-    elif dirx == -1:
+
+    elif dirx == -1: # left
         character.clip_composite_draw(frame * frame_width, frame_y * 11 + 64, frame_width, frame_height, 0, 'h', x, y, 80, 80)
-    elif dirx == 1:
+    elif dirx == 1: #right
         character.clip_draw(frame * frame_width, frame_y * 11 + 64, frame_width, frame_height, x, y)
-    elif diry == -1:
+    elif diry == -1: #down
         character.clip_draw(frame * frame_width + frame_width * 6, frame_y * 6 + 64, frame_width, frame_height, x, y)
-    elif diry == 1:
+    elif diry == 1: #up
         character.clip_draw(frame * frame_width, frame_y * 6 + 64, frame_width, frame_height, x, y)
 
     update_canvas()
     handle_events()
     frame = (frame + 1) % 6
-    x += dirx * 5
-    y += diry * 5
-    delay(0.1)
+    if (x + dirx * 5 >= frame_width // 2) and (x + dirx * 5 <= TUK_WIDTH - frame_width // 2):
+        x += dirx * 5
+    if (y + diry * 5 >= frame_height // 2) and (y + diry * 5 <= TUK_HEIGHT - frame_height // 2):
+        y += diry * 5
+    delay(0.03)
 
 close_canvas()
