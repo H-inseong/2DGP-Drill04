@@ -36,7 +36,10 @@ dir = 0
 while running:
     clear_canvas()
     grass.draw(400,30)
-    character.clip_draw(frame*100, 100, 100, 100, x, 90)
+    if dir == 1 or dir == 0:
+        character.clip_draw(frame*100, 100, 100, 100, x, 90)
+    elif dir == -1:
+        character.clip_composite_draw(frame * 100, 0, 100, 100, 0, 'h', x, 90, 100, 100)
     update_canvas()
     handle_events()
     frame = (frame + 1) % 8
