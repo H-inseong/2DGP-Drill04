@@ -5,8 +5,6 @@ open_canvas(TUK_WIDTH, TUK_HEIGHT)
 tuk_ground = load_image('TUK_GROUND.png')
 character = load_image('Sprite_Sheet.png')
 
-dirx = 0
-diry = 0
 
 def handle_events():
     global running
@@ -17,6 +15,7 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             running = False
+
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_RIGHT:
                 dirx += 1
@@ -39,14 +38,19 @@ def handle_events():
             elif event.key == SDLK_DOWN:
                 diry += 1
 
+
+
 running = True
-frame = 0
-x, y = TUK_WIDTH // 2, TUK_HEIGHT // 2
 hide_cursor()
 
+dirx = 0
+diry = 0
+frame = 0
+x, y = TUK_WIDTH // 2, TUK_HEIGHT // 2
 frame_width = 80
-frame_y = 80
 frame_height = 80
+frame_y = 80
+
 while running:
     clear_canvas()
     tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
@@ -65,11 +69,24 @@ while running:
 
     update_canvas()
     handle_events()
-    frame = (frame + 1) % 6
+
+    if dirx == 0 and diry == 0: #idle
+        frame = (frame + 1) % 7
+    elif dirx == -1: # left
+        frame = (frame + 1) % 9
+    elif dirx == 1: #right
+        frame = (frame + 1) % 9
+    elif diry == -1: #down
+        frame = (frame + 1) % 6
+    elif diry == 1: #up
+        frame = (frame + 1) % 6
+
+
+    #경계처리
     if (x + dirx * 5 >= frame_width // 2) and (x + dirx * 5 <= TUK_WIDTH - frame_width // 2):
         x += dirx * 5
     if (y + diry * 5 >= frame_height // 2) and (y + diry * 5 <= TUK_HEIGHT - frame_height // 2):
         y += diry * 5
-    delay(0.03)
+    delay(0.05)
 
 close_canvas()
